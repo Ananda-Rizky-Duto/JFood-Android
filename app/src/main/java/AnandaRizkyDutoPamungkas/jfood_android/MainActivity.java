@@ -2,7 +2,9 @@ package AnandaRizkyDutoPamungkas.jfood_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListAdapter;
@@ -27,52 +29,13 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<Seller, ArrayList<Food>> childMapping = new HashMap<>();
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        expandableListAdapter = new MainListAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
-                return false;
-            }
-        });
+        expandableListView = findViewById(R.id.lvExp);
+        refreshList();
     }
 
     protected void refreshList()
@@ -89,41 +52,73 @@ public class MainActivity extends AppCompatActivity {
                     {
                         for(int i = 0; i < jsonResponse.length(); i++)
                         {
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
                             JSONObject food = jsonResponse.getJSONObject(i);
                             JSONObject seller = food.getJSONObject("seller");
                             JSONObject location = seller.getJSONObject("location");
-                        }
 
-                        Seller seller1 = new Seller(2, "Gerald", "gerald@gmail.com", "092812891237", new Location("DKI Jakarta", "Jakarta Timur", "Rumah Gerald"));
-                        Food food1 = new Food( 3, "Sashimi", seller1, 7000, "Japanese");
+                            Location newLocation = new Location(
+                                    location.getString("province"),
+                                    location.getString("description"),
+                                    location.getString("city")
+                            );
 
-                        listSeller.add(new Seller(seller1.getId(), seller1.getName(), seller1.getEmail(), seller1.getPhoneNumber(), seller1.getLocation()));
-                        foodIdList.add(new Food(food1.getId(), food1.getName(), food1.getSeller(), food1.getPrice(), food1.getCategory()));
+                            Seller newSeller = new Seller(
+                                    seller.getInt("id"),
+                                    seller.getString("name"),
+                                    seller.getString("email"),
+                                    seller.getString("phoneNumber"),
+                                    newLocation
+                            );
 
-                        for(Seller sel : listSeller)
-                        {
-                            ArrayList<Food> temp = new ArrayList<>();
-                            for(Food food : foodIdList)
-                            {
-                                if(food.getSeller().getName().equals(sel.getName()) || food.getSeller().getEmail().equals(sel.getEmail())
-                                        || food.getSeller().getPhoneNumber().equals(sel.getPhoneNumber()))
-                                {
-                                    temp.add(food);
+                            Food newFood = new Food(
+                                    food.getInt("id"),
+                                    food.getString("name"),
+                                    newSeller,
+                                    food.getInt("price"),
+                                    food.getString("category")
+                            );
+
+                            boolean tempStatus = true;
+                            for(Seller sellerPtr : listSeller) {
+                                if(sellerPtr.getId() == newSeller.getId()){
+                                    tempStatus = false;
                                 }
                             }
-                            childMapping.put(sel,temp);
+                            if(tempStatus==true){
+                                listSeller.add(newSeller);
+                            }
+
+                            foodIdList.add(newFood);
+                            for(Seller sel : listSeller)
+                            {
+                                ArrayList<Food> temp = new ArrayList<>();
+                                for(Food foods : foodIdList)
+                                {
+                                    if(foods.getSeller().getName().equals(sel.getName()) || foods.getSeller().getEmail().equals(sel.getEmail())
+                                            || foods.getSeller().getPhoneNumber().equals(sel.getPhoneNumber()))
+                                    {
+                                        temp.add(foods);
+                                    }
+                                }
+                                childMapping.put(sel,temp);
+                            }
+
+                            expandableListAdapter = new MainListAdapter(MainActivity.this, listSeller, childMapping);
+                            expandableListView.setAdapter(expandableListAdapter);
                         }
                     }
                 }
                 catch(JSONException e)
                 {
-                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("Load Data Failed.").create().show();
                 }
-
-                ExpandableListView expListView = (ExpandableListView) findViewById(R.id.lvExp);
-                MainListAdapter listAdapter = new MainListAdapter(getApplicationContext(), expandableListTitle, expandableListDetail);
-                expListView.setAdapter(listAdapter);
             }
         };
+
+        MenuRequest menuRequest = new MenuRequest(responseListener);
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(menuRequest);
     }
 }
