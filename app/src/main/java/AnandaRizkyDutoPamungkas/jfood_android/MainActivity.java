@@ -3,6 +3,7 @@ package AnandaRizkyDutoPamungkas.jfood_android;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.Toast;
@@ -17,21 +18,61 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Seller> listSeller = new ArrayList<>();
     private ArrayList<Food> foodIdList = new ArrayList<>();
     private HashMap<Seller, ArrayList<Food>> childMapping = new HashMap<>();
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
+    List<String> expandableListTitle;
+    HashMap<String, List<String>> expandableListDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ExpandableListView expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        refreshList();
-        MainListAdapter listAdapter = new MainListAdapter(MainActivity.this, listSeller, childMapping);
-        expListView.setAdapter(listAdapter);
+
+        expandableListAdapter = new MainListAdapter(this, expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(expandableListAdapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        expandableListTitle.get(groupPosition) + " List Expanded.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        expandableListTitle.get(groupPosition)
+                                + " -> "
+                                + expandableListDetail.get(
+                                expandableListTitle.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT
+                ).show();
+                return false;
+            }
+        });
     }
 
     protected void refreshList()
@@ -78,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_LONG).show();
                 }
+
+                ExpandableListView expListView = (ExpandableListView) findViewById(R.id.lvExp);
+                MainListAdapter listAdapter = new MainListAdapter(getApplicationContext(), expandableListTitle, expandableListDetail);
+                expListView.setAdapter(listAdapter);
             }
         };
     }
