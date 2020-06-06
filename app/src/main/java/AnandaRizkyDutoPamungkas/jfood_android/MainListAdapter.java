@@ -12,6 +12,15 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+/**
+ * Kelas ini digunakan untuk membuat expandable list pada layout main
+ * expandable list ini akan menghubungkan layout seller dan layout food
+ * dan menampilkannya pada layout main
+ *
+ * @author Ananda Rizky Duto Pamungkas
+ * @version 6 Juni 2020
+ */
+
 public class MainListAdapter extends BaseExpandableListAdapter {
 
     private Context context;

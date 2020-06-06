@@ -1,11 +1,28 @@
 package AnandaRizkyDutoPamungkas.jfood_android;
 
+/**
+ * Kelas ini digunakan untuk data penjual pada JFood.
+ *
+ * @author Ananda Rizky Duto Pamungkas
+ * @version 27 Februari 2020
+ *
+ */
+
 public class Seller {
     private int id;
     private String name;
     private String email;
     private String phoneNumber;
     private Location location;
+
+    /**
+     * Constructor untuk objek seller
+     * @param id
+     * @param name
+     * @param email
+     * @param phoneNumber
+     * @param location
+     */
 
     public Seller(int id, String name, String email, String phoneNumber, Location location)
     {
@@ -16,9 +33,8 @@ public class Seller {
         this.location = location;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan id penjual
-     *
      * @return id dari penjual
      */
 
@@ -27,9 +43,8 @@ public class Seller {
         return id;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan nama penjual
-     *
      * @return name dari penjual
      */
 
@@ -38,9 +53,8 @@ public class Seller {
         return name;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan email penjual
-     *
      * @return email dari penjual
      */
 
@@ -49,9 +63,8 @@ public class Seller {
         return email;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan nomor telfon penjual
-     *
      * @return phoneNumber dari penjual
      */
 
@@ -60,9 +73,8 @@ public class Seller {
         return phoneNumber;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan lokasi penjual
-     *
      * @return location dari lokasi
      */
 
@@ -71,10 +83,9 @@ public class Seller {
         return location;
     }
 
-    /*
+    /**
      * Metode untuk merubah id penjual
-     *
-     * @return id dari penjual
+     * @param id dari penjual
      */
 
     public void setId(int id)
@@ -82,10 +93,9 @@ public class Seller {
         this.id = id;
     }
 
-    /*
+    /**
      * Metode untuk merubah nama penjual
-     *
-     * @return name dari penjual
+     * @param name dari penjual
      */
 
     public void setName(String name)
@@ -93,10 +103,9 @@ public class Seller {
         this.name = name;
     }
 
-    /*
+    /**
      * Metode untuk merubah email penjual
-     *
-     * @return email dari penjual
+     * @param email dari penjual
      */
 
     public void setEmail(String email)
@@ -104,10 +113,9 @@ public class Seller {
         this.email = email;
     }
 
-    /*
+    /**
      * Metode untuk merubah nomor telfon penjual
-     *
-     * @return phoneNumber dari penjual
+     * @param phoneNumber  dari penjual
      */
 
     public void setPhoneNumber(String phoneNumber)
@@ -115,10 +123,9 @@ public class Seller {
         this.phoneNumber = phoneNumber;
     }
 
-    /*
+    /**
      * Metode untuk merubah lokasi penjual
-     *
-     * @return location dari lokasi
+     * @param location dari lokasi
      */
 
     public void setLocation(Location location)

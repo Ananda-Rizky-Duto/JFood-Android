@@ -1,11 +1,27 @@
 package AnandaRizkyDutoPamungkas.jfood_android;
 
+/**
+ * Kelas untuk melakukan pengaturan food di JFood
+ *
+ * @auhor Ananda Rizky Duto Pamungkas
+ * @version 6 Juni 2020
+ */
+
 public class Food {
     private int id;
     private String name;
     private int price;
     private String category;
     private Seller seller;
+
+    /**
+     * Constructor objek food
+     * @param id
+     * @param name
+     * @param seller
+     * @param price
+     * @param category
+     */
 
     public Food(int id, String name, Seller seller, int price, String category)
     {
@@ -16,9 +32,8 @@ public class Food {
         this.category = category;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan id makanan
-     *
      * @return id dari makanan
      */
 
@@ -27,9 +42,8 @@ public class Food {
         return id;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan nama makanan
-     *
      * @return name dari makanan
      */
 
@@ -38,9 +52,8 @@ public class Food {
         return name;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan penjual dari makanan
-     *
      * @return seller dari penjual
      */
 
@@ -49,9 +62,8 @@ public class Food {
         return seller;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan harga dari makanan
-     *
      * @return price dari makanan
      */
 
@@ -60,9 +72,8 @@ public class Food {
         return price;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan kategori dari makanan
-     *
      * @return category dari makanan
      */
 
@@ -71,10 +82,9 @@ public class Food {
         return category;
     }
 
-    /*
+    /**
      * Metode untuk merubah id makanan
-     *
-     * @return id dari makanan
+     * @param id dari makanan
      */
 
     public void setId(int id)
@@ -82,10 +92,9 @@ public class Food {
         this.id = id;
     }
 
-    /*
+    /**
      * Metode untuk merubah nama makanan
-     *
-     * @return name dari makanan
+     * @param name dari makanan
      */
 
     public void setName(String name)
@@ -93,10 +102,9 @@ public class Food {
         this.name = name;
     }
 
-    /*
+    /**
      * Metode untuk merubah penjual makanan
-     *
-     * @return seller dari makanan
+     * @param seller dari makanan
      */
 
     public void setSeller(Seller seller)
@@ -104,10 +112,9 @@ public class Food {
         this.seller = seller;
     }
 
-    /*
+    /**
      * Metode untuk merubah harga makanan
-     *
-     * @return price dari makanan
+     * @param price dari makanan
      */
 
     public void setPrice(int price)
@@ -115,20 +122,13 @@ public class Food {
         this.price = price;
     }
 
-    /*
+    /**
      * Metode untuk merubah kategori makanan
-     *
-     * @return category dari makanan
+     * @param category dari makanan
      */
 
     public void setCategory(String category)
     {
         this.category = category;
     }
-
-    /*
-     * Metode untuk menampilkan data
-     *
-     * @return name dari makanan
-     */
 }

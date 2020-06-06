@@ -1,9 +1,25 @@
 package AnandaRizkyDutoPamungkas.jfood_android;
 
-public class Location {
+/**
+ * Kelas ini digunakan untuk getter data lokasi pada JFood.
+ *
+ * @author Ananda Rizky Duto Pamungkas
+ * @version 27 Februari 2020
+ *
+ */
+
+public class Location
+{
     private String province;
     private String description;
     private String city;
+
+    /**
+     * Constructor untuk objek location
+     * @param city
+     * @param province
+     * @param description
+     */
 
     public Location(String city, String province, String description)
     {
@@ -12,9 +28,8 @@ public class Location {
         this.description = description;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan nama provinsi pada lokasi
-     *
      * @return province dari lokasi
      */
 
@@ -23,9 +38,8 @@ public class Location {
         return province;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan nama kota pada lokasi
-     *
      * @return city dari lokasi
      */
 
@@ -34,9 +48,8 @@ public class Location {
         return city;
     }
 
-    /*
+    /**
      * Metode untuk mendapatkan deskripsi pada lokasi
-     *
      * @return description dari lokasi
      */
 
@@ -45,10 +58,9 @@ public class Location {
         return description;
     }
 
-    /*
+    /**
      * Metode untuk merubah nama provinsi pada lokasi
-     *
-     * @return province dari lokasi
+     * @param province dari lokasi
      */
 
     public void setProvince(String province)
@@ -56,10 +68,9 @@ public class Location {
         this.province = province;
     }
 
-    /*
+    /**
      * Metode untuk merubah nama kota pada lokasi
-     *
-     * @return city dari lokasi
+     * @param city dari lokasi
      */
 
     public void setCity(String city)
@@ -67,10 +78,9 @@ public class Location {
         this.city = city;
     }
 
-    /*
+    /**
      * Metode untuk merubah deskripsi pada lokasi
-     *
-     * @return description dari lokasi
+     * @param description dari lokasi
      */
 
     public void setDescription(String description)

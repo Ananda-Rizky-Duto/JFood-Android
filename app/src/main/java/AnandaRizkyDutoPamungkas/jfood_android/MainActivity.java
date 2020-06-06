@@ -3,9 +3,12 @@ package AnandaRizkyDutoPamungkas.jfood_android;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.Toast;
@@ -22,20 +25,84 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Kelas ini digunakan untuk mengatur aktivitas pada layout main
+ *
+ * @author Ananda Rizky Duto Pamungkas
+ * @version 6 Juni 2020
+ */
+
 public class MainActivity extends AppCompatActivity {
 
+    private int currentUserId;
+    private String currentUserName;
     private ArrayList<Seller> listSeller = new ArrayList<>();
     private ArrayList<Food> foodIdList = new ArrayList<>();
     private HashMap<Seller, ArrayList<Food>> childMapping = new HashMap<>();
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
+    Button pesanan;
+    Button btnPromo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pesanan  = findViewById(R.id.pesanan);
+        btnPromo = findViewById(R.id.promo);
+
+        //Fetch data from login
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            currentUserId = extras.getInt("currentUserId");
+            currentUserName = extras.getString("currentUserName");
+        }
+
         expandableListView = findViewById(R.id.lvExp);
         refreshList();
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Intent intent = new Intent(MainActivity.this, BuatPesananActivity.class);
+
+                int foodId = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getId();
+                String foodName = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getName();
+                String foodCategory = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getCategory();
+                int foodPrice = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getPrice();
+
+                intent.putExtra("item_id",foodId);
+                intent.putExtra("item_name",foodName);
+                intent.putExtra("item_category",foodCategory);
+                intent.putExtra("item_price",foodPrice);
+                intent.putExtra("promoo", 2000);
+                intent.putExtra("currentUserId", currentUserId);
+                intent.putExtra("currentUserName", currentUserName);
+
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        pesanan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                        Intent intent = new Intent(MainActivity.this, SelesaiPesananActivity.class);
+                        intent.putExtra("currentUserId", currentUserId);
+                        intent.putExtra("currentUserName", currentUserName);
+                        startActivity(intent);
+            }
+        });
+
+        btnPromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PromoListActivity.class);
+                intent.putExtra("currentUserId", currentUserId);
+                intent.putExtra("currentUserName", currentUserName);
+                startActivity(intent);
+            }
+        });
     }
 
     protected void refreshList()
@@ -50,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray jsonResponse = new JSONArray(response);
                     if(jsonResponse != null)
                     {
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.putExtra("currentUserId", currentUserId);
+                        intent.putExtra("currentUserName", currentUserName);
                         for(int i = 0; i < jsonResponse.length(); i++)
                         {
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);

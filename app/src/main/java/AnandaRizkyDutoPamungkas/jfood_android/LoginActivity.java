@@ -3,7 +3,9 @@ package AnandaRizkyDutoPamungkas.jfood_android;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.FaceDetector;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.view.View;
 import android.widget.*;
 
@@ -13,6 +15,13 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+/**
+ * Kelas yang digunakan untuk mengatur aktivitas pada layout login
+ *
+ * @author Ananda Rizky Duto Pamungkas
+ * @version 6 Juni 2020
+ */
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,9 +55,11 @@ public class LoginActivity extends AppCompatActivity {
                             if (jsonObject != null) {
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                 Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                mainIntent.putExtra("currentUserId",jsonObject.getInt("id"));
+                                mainIntent.putExtra("currentUserName", jsonObject.getString("name"));
                                 startActivity(mainIntent);
                             } else {
-                                Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Fill the username and password", Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException error) {
                             Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
@@ -65,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                tvRegister.setEnabled(false);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });

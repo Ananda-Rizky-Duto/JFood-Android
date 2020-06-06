@@ -2,6 +2,7 @@ package AnandaRizkyDutoPamungkas.jfood_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -13,6 +14,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Kelas ini digunakan untuk mengatur aktivitas pada layout register
+ *
+ * @author Ananda Rizky Duto Pamungkas
+ * @version 6 Juni 2020
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     EditText etName;
@@ -50,6 +57,10 @@ public class RegisterActivity extends AppCompatActivity {
                             {
                                 Toast.makeText(RegisterActivity.this, "Register Successful", Toast.LENGTH_LONG).show();
                             }
+                            else
+                            {
+                                Toast.makeText(RegisterActivity.this, "Fill the form first", Toast.LENGTH_LONG).show();
+                            }
                         }
                         catch (JSONException e)
                         {
@@ -61,6 +72,8 @@ public class RegisterActivity extends AppCompatActivity {
                 RegisterRequest registerRequest = new RegisterRequest(name, email, password, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
+                Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
