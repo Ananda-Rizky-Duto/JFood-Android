@@ -16,6 +16,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Kelas ini digunakan untuk mengatur aktivitas pada layout promo list untuk menampilkan promo
+ *
+ * @author Ananda Rizky Duto Pamungkas
+ * @version 6 Juni 2020
+ */
+
 public class PromoListActivity extends AppCompatActivity {
 
     ListView PromoListView;
