@@ -25,8 +25,8 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="238dp"
+        android:layout_height="43dp"
         android:layout_marginTop="20dp"
         android:background="#FFFFFF"
         android:text="Login"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:foregroundTint="#FFFFFF"
-        android:text="Register Now"
+        android:text="Don't have an account? Register Now"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

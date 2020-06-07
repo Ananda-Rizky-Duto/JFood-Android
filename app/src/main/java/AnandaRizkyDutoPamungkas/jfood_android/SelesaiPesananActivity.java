@@ -108,6 +108,7 @@ public class SelesaiPesananActivity extends AppCompatActivity {
                     tvInvoiceTotalPrice.setText("" + invoiceTotalPrice);
                 }
                 catch (JSONException e) {
+                    Toast.makeText(SelesaiPesananActivity.this, "You don't have ongoing invoice", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SelesaiPesananActivity.this, MainActivity.class);
                     intent.putExtra("currentUserId", currentUserId);
                     intent.putExtra("currentUserName", currentUserName);

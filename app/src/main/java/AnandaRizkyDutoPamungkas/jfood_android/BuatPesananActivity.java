@@ -15,6 +15,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Kelas ini digunakan untuk mengatur komponen yang ada pada layout buat pesanan
  *
@@ -28,17 +30,14 @@ public class BuatPesananActivity extends AppCompatActivity {
     //Inisiasi variable
     private int currentUserId;
     private String currentUserName;
-    private int id_food;
-    private String foodName;
-    private String foodCategory;
-    private double foodPrice;
+    private ArrayList<Integer> id_food = new ArrayList<>();
+    private ArrayList<String> foodList = new ArrayList<>();
+    private int foodPrice;
     private String promoCode;
     private String selectedPayment;
 
     //Inisiasi componen yang ada pada layout
-    TextView food_name;
-    TextView food_category;
-    TextView food_price;
+    ListView listView;
     TextView total_price;
     TextView textCode;
     EditText promo_code;
@@ -58,16 +57,13 @@ public class BuatPesananActivity extends AppCompatActivity {
         if (extras != null) {
             currentUserId = extras.getInt("currentUserId");
             currentUserName = extras.getString("currentUserName");
-            id_food = extras.getInt("item_id");
-            foodName = extras.getString("item_name");
-            foodCategory = extras.getString("item_category");
-            foodPrice = extras.getInt("item_price");
+            id_food = extras.getIntegerArrayList("foodsId");
+            foodList = extras.getStringArrayList("foodCart");
+            foodPrice = extras.getInt("totalPrice");
         }
 
         //Inisiasi componen yang ada pada layout
-        food_name = findViewById(R.id.food_name);
-        food_category = findViewById(R.id.food_category);
-        food_price = findViewById(R.id.food_price);
+        listView = findViewById(R.id.foodsListView);
         total_price = findViewById(R.id.total_price);
         textCode = findViewById(R.id.textCode);
         promo_code = findViewById(R.id.promo_code);
@@ -84,9 +80,8 @@ public class BuatPesananActivity extends AppCompatActivity {
         pesan.setEnabled(false);
         hitung.setEnabled(false);
 
-        food_name.setText(foodName);
-        food_category.setText(foodCategory);
-        food_price.setText("Rp. " + (int) foodPrice);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(BuatPesananActivity.this, android.R.layout.simple_list_item_1, foodList);
+        listView.setAdapter(arrayAdapter);
         total_price.setText("Rp. " + "0");
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -205,11 +200,11 @@ public class BuatPesananActivity extends AppCompatActivity {
 
                 if(selectedPayment.equals("Via Cash"))
                 {
-                    buatPesananRequest = new BuatPesananRequest(id_food+"", currentUserId+"", responseListener);
+                    buatPesananRequest = new BuatPesananRequest(id_food, currentUserId+"", responseListener);
                 }
                 if(selectedPayment.equals("Via Cashless"))
                 {
-                    buatPesananRequest = new BuatPesananRequest(id_food+"", currentUserId+"", promoCode+"", responseListener);
+                    buatPesananRequest = new BuatPesananRequest(id_food, currentUserId+"", promoCode+"", responseListener);
                 }
                 RequestQueue queue = Volley.newRequestQueue(BuatPesananActivity.this);
                 queue.add(buatPesananRequest);

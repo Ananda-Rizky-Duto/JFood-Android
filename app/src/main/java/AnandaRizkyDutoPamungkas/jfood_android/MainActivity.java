@@ -38,11 +38,13 @@ public class MainActivity extends AppCompatActivity {
     private String currentUserName;
     private ArrayList<Seller> listSeller = new ArrayList<>();
     private ArrayList<Food> foodIdList = new ArrayList<>();
+    private ArrayList<Food> foodCart = new ArrayList<>();
     private HashMap<Seller, ArrayList<Food>> childMapping = new HashMap<>();
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     Button pesanan;
     Button btnPromo;
+    Button btnOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pesanan  = findViewById(R.id.pesanan);
         btnPromo = findViewById(R.id.promo);
+        btnOrder = findViewById(R.id.order);
 
         //Fetch data from login
         Bundle extras = getIntent().getExtras();
@@ -63,23 +66,44 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Intent intent = new Intent(MainActivity.this, BuatPesananActivity.class);
-
-                int foodId = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getId();
-                String foodName = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getName();
-                String foodCategory = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getCategory();
-                int foodPrice = childMapping.get(listSeller.get(groupPosition)).get(childPosition).getPrice();
-
-                intent.putExtra("item_id",foodId);
-                intent.putExtra("item_name",foodName);
-                intent.putExtra("item_category",foodCategory);
-                intent.putExtra("item_price",foodPrice);
-                intent.putExtra("promoo", 2000);
-                intent.putExtra("currentUserId", currentUserId);
-                intent.putExtra("currentUserName", currentUserName);
-
-                startActivity(intent);
+                Food food = childMapping.get(listSeller.get(groupPosition)).get(childPosition);
+                foodCart.add(food);
+                Toast.makeText(MainActivity.this, "1 x "+food.getName()+" added to cart", Toast.LENGTH_SHORT).show();
                 return true;
+            }
+        });
+
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(foodCart == null)
+                {
+                    Toast.makeText(MainActivity.this, "Cart is empty, Order first", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    final ArrayList<String> foodName = new ArrayList<>();
+                    for (Food foods : foodCart) {
+                        foodName.add("\n"+"Food name\t\t\t: " + foods.getName() +
+                                "\nFood Price\t\t\t\t: Rp. " + foods.getPrice() +
+                                "\nFood Category\t: " + foods.getCategory()+"\n");
+                    }
+
+                    Intent intent = new Intent(MainActivity.this, BuatPesananActivity.class);
+                    intent.putExtra("currentUserId", currentUserId);
+                    intent.putExtra("currentUserName", currentUserName);
+                    intent.putExtra("foodCart", foodName);
+                    int foodTotalPrice = 0;
+                    ArrayList<Integer> foodsId = new ArrayList<>();
+                    for (Food foods : foodCart) {
+                        foodTotalPrice += foods.getPrice();
+                        foodsId.add(foods.getId());
+                    }
+                    intent.putExtra("totalPrice", foodTotalPrice);
+                    intent.putExtra("foodsId", foodsId);
+                    startActivity(intent);
+                }
             }
         });
 
