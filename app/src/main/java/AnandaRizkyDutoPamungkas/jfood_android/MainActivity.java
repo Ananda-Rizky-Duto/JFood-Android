@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(foodCart == null)
+                if(foodCart.isEmpty())
                 {
                     Toast.makeText(MainActivity.this, "Cart is empty, Order first", Toast.LENGTH_SHORT).show();
                 }
